@@ -37,6 +37,8 @@ class NoteHandlerImpl implements NoteHandler {
 
     @Override
     public void deleteNotes(String userEmail, List<NoteDto> noteDtos) {
+        noteDtoValidator.validateIds(noteDtos);
+
         List<UUID> noteIds = noteDtos.stream()
                 .map(NoteDto::getId)
                 .collect(Collectors.toList());

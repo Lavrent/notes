@@ -12,6 +12,10 @@ import java.util.Objects;
 public class NoteDtoValidatorImpl implements NoteDtoValidator {
     @Override
     public void validate(List<NoteDto> noteDtos) {
+        if (noteDtos == null || noteDtos.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note are not present");
+        }
+
         noteDtos.forEach(this::validateSingleNoteDto);
     }
 
@@ -22,11 +26,15 @@ public class NoteDtoValidatorImpl implements NoteDtoValidator {
                 .anyMatch(Objects::isNull);
 
         if (noteIdIsNull) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note id is null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note id is invalid");
         }
     }
 
     private void validateSingleNoteDto(NoteDto noteDto) {
+        if (noteDto == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided note json is null");
+        }
+
         if (noteDto.getTitle() == null || noteDto.getTitle().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title is not present");
         }
