@@ -20,8 +20,8 @@ public class NoteController {
 
     @PostMapping
     public ResponseEntity<List<NoteDto>> createNotes(Principal principal, @RequestBody List<NoteDto> noteDtos) {
-
         String userEmail = principal.getName();
+
         return ResponseEntity.ok(noteHandler.createNotes(userEmail, noteDtos));
     }
 }

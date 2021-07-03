@@ -14,9 +14,9 @@ public class NoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title")
+    @Column(name = "title", length = 50)
     private String title;
-    @Column(name = "note")
+    @Column(name = "note", length = 1000)
     private String note;
     @Column(name = "create_time")
     private LocalTime createTime;

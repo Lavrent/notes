@@ -10,8 +10,8 @@ import java.time.LocalTime;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
-private String email;
-private String password;
-private LocalTime createTime;
-private LocalTime lastUpdateTime;
+    private String email;
+    private String password;
+    private LocalTime createTime;
+    private LocalTime lastUpdateTime;
 }
