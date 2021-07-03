@@ -21,7 +21,6 @@ public class UserAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 

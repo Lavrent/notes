@@ -4,10 +4,7 @@ import com.disqo.notes.web.dtos.NoteDto;
 import com.disqo.notes.web.handlers.NoteHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,5 +20,12 @@ public class NoteController {
         String userEmail = principal.getName();
 
         return ResponseEntity.ok(noteHandler.createNotes(userEmail, noteDtos));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NoteDto>> getNotes(Principal principal) {
+        String userEmail = principal.getName();
+
+        return ResponseEntity.ok(noteHandler.getNotes(userEmail));
     }
 }

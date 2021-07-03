@@ -15,8 +15,13 @@ class NoteHandlerImpl implements NoteHandler {
     private final NoteDtoService noteDtoService;
 
     @Override
-    public List<NoteDto> createNotes(String userEmail,List<NoteDto> noteDtos) {
+    public List<NoteDto> createNotes(String userEmail, List<NoteDto> noteDtos) {
         noteDtoValidator.validate(noteDtos);
-        return noteDtoService.createNotes(userEmail,noteDtos);
+        return noteDtoService.createNotes(userEmail, noteDtos);
+    }
+
+    @Override
+    public List<NoteDto> getNotes(String userEmail) {
+        return noteDtoService.getNotes(userEmail);
     }
 }

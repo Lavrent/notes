@@ -28,16 +28,23 @@ class NoteDtoServiceImpl implements NoteDtoService {
         UserEntity userEntity = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with given email does not exist"));
 
-        noteEntities.forEach(noteEntity -> {
+        for (NoteEntity noteEntity : noteEntities) {
             LocalTime currentTime = LocalTime.now();
 
             noteEntity.setUuid(UUID.randomUUID());
             noteEntity.setUser(userEntity);
             noteEntity.setCreateTime(currentTime);
             noteEntity.setLastUpdateTime(currentTime);
-        });
+        }
 
         noteRepository.saveAll(noteEntities);
+
+        return noteDtoToEntityMapper.toNoteDtos(noteEntities);
+    }
+
+    @Override
+    public List<NoteDto> getNotes(String userEmail) {
+        List<NoteEntity> noteEntities = noteRepository.findByUserEmail(userEmail);
 
         return noteDtoToEntityMapper.toNoteDtos(noteEntities);
     }
