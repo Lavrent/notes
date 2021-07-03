@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NoteDto {
-    private UUID uuid;
+    private UUID id;
     private String title;
     private String note;
     private LocalTime createTime;

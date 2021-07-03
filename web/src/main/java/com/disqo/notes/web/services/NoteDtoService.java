@@ -8,4 +8,6 @@ public interface NoteDtoService {
     List<NoteDto> createNotes(String userEmail, List<NoteDto> noteDtos);
 
     List<NoteDto> getNotes(String userEmail);
+
+    List<NoteDto> updateNotes(String userEmail, List<NoteDto> noteDtos);
 }

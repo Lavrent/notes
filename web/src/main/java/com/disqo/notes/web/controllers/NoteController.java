@@ -28,4 +28,11 @@ public class NoteController {
 
         return ResponseEntity.ok(noteHandler.getNotes(userEmail));
     }
+
+    @PutMapping
+    public ResponseEntity<List<NoteDto>> updateNotes(Principal principal, @RequestBody List<NoteDto> noteDtos) {
+        String userEmail = principal.getName();
+
+        return ResponseEntity.ok(noteHandler.updateNotes(userEmail, noteDtos));
+    }
 }
