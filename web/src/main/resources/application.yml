@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/cafe?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/notesDb?createDatabaseIfNotExist=true
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
