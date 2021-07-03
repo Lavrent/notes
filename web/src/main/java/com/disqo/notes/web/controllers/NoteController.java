@@ -3,6 +3,7 @@ package com.disqo.notes.web.controllers;
 import com.disqo.notes.web.dtos.NoteDto;
 import com.disqo.notes.web.handlers.NoteHandler;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/notes")
+@RequestMapping(value = "/notes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class NoteController {
     private final NoteHandler noteHandler;
 
