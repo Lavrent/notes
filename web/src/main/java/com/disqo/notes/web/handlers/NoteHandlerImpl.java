@@ -30,6 +30,7 @@ class NoteHandlerImpl implements NoteHandler {
     @Override
     public List<NoteDto> updateNotes(String userEmail, List<NoteDto> noteDtos) {
         noteDtoValidator.validate(noteDtos);
+        noteDtoValidator.validateIds(noteDtos);
 
         return noteDtoService.updateNotes(userEmail, noteDtos);
     }

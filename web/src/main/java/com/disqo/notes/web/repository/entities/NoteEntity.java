@@ -29,5 +29,4 @@ public class NoteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
 }

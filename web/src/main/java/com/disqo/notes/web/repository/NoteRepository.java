@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface NoteRepository extends JpaRepository<NoteEntity, Long> {
 
-    List<NoteEntity> findByUserEmail(String userEmail);
+    List<NoteEntity> findAllByUserEmail(String userEmail);
 
     Optional<NoteEntity> findByUuidAndUserEmail(UUID uuid, String userEmail);
 }

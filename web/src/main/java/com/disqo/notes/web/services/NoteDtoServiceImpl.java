@@ -47,7 +47,7 @@ class NoteDtoServiceImpl implements NoteDtoService {
 
     @Override
     public List<NoteDto> getNotes(String userEmail) {
-        List<NoteEntity> noteEntities = noteRepository.findByUserEmail(userEmail);
+        List<NoteEntity> noteEntities = noteRepository.findAllByUserEmail(userEmail);
 
         return noteDtoToEntityMapper.toNoteDtos(noteEntities);
     }
@@ -63,7 +63,7 @@ class NoteDtoServiceImpl implements NoteDtoService {
 
     private NoteEntity updateNote(String userEmail, NoteDto noteDto) {
         NoteEntity noteEntity = noteRepository.findByUuidAndUserEmail(noteDto.getId(), userEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Note with given id does not exist %s", noteDto.getId().toString())));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Note with given id does not exist %s", noteDto.getId())));
 
         noteEntity.setTitle(noteDto.getTitle());
         noteEntity.setNote(noteDto.getNote());

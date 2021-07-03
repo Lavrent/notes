@@ -6,12 +6,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class NoteDtoValidatorImpl implements NoteDtoValidator {
     @Override
     public void validate(List<NoteDto> noteDtos) {
         noteDtos.forEach(this::validateSingleNoteDto);
+    }
+
+    @Override
+    public void validateIds(List<NoteDto> noteDtos) {
+        boolean noteIdIsNull = noteDtos.stream()
+                .map(NoteDto::getId)
+                .anyMatch(Objects::isNull);
+
+        if (noteIdIsNull) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note id is null");
+        }
     }
 
     private void validateSingleNoteDto(NoteDto noteDto) {

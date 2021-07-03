@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface NoteDtoValidator {
     void validate(List<NoteDto> noteDtos);
+
+    void validateIds(List<NoteDto> noteDtos);
 }
