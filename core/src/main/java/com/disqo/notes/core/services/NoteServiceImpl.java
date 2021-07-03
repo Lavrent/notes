@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 class NoteServiceImpl implements NoteService {
+    private static final String NOTE_NOT_FOUND_MESSAGE = "Note with id %s does not exist";
     private final UserRepository userRepository;
     private final NoteModelToEntityMapper noteModelToEntityMapper;
     private final NoteRepository noteRepository;
@@ -63,7 +64,7 @@ class NoteServiceImpl implements NoteService {
 
     private NoteEntity updateNote(String userEmail, NoteModel noteModel) {
         NoteEntity noteEntity = noteRepository.findByUuidAndUserEmail(noteModel.getUuid(), userEmail)
-                .orElseThrow(() -> new UserValidationException(String.format("Note with given id does not exist %s", noteModel.getUuid())));
+                .orElseThrow(() -> new UserValidationException(String.format(NOTE_NOT_FOUND_MESSAGE, noteModel.getUuid())));
 
         noteEntity.setTitle(noteModel.getTitle());
         noteEntity.setNote(noteModel.getNote());
@@ -77,7 +78,7 @@ class NoteServiceImpl implements NoteService {
         for (UUID noteId : noteIds) {
             noteRepository.findByUuidAndUserEmail(noteId, userEmail)
                     .ifPresentOrElse(noteRepository::delete, () -> {
-                        throw new NoteValidationException(String.format("User does not have note with id %s", noteId));
+                        throw new NoteValidationException(String.format(NOTE_NOT_FOUND_MESSAGE, noteId));
                     });
         }
     }

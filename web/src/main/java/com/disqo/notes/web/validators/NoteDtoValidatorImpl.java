@@ -1,9 +1,8 @@
 package com.disqo.notes.web.validators;
 
 import com.disqo.notes.web.dtos.NoteDto;
-import org.springframework.http.HttpStatus;
+import com.disqo.notes.web.exceptions.JsonValidationExcepton;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +12,7 @@ public class NoteDtoValidatorImpl implements NoteDtoValidator {
     @Override
     public void validate(List<NoteDto> noteDtos) {
         if (noteDtos == null || noteDtos.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note are not present");
+            throw new JsonValidationExcepton("Note are not present");
         }
 
         noteDtos.forEach(this::validateSingleNoteDto);
@@ -26,24 +25,24 @@ public class NoteDtoValidatorImpl implements NoteDtoValidator {
                 .anyMatch(Objects::isNull);
 
         if (noteIdIsNull) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note id is invalid");
+            throw new JsonValidationExcepton("Note id is invalid");
         }
     }
 
     private void validateSingleNoteDto(NoteDto noteDto) {
         if (noteDto == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided note json is null");
+            throw new JsonValidationExcepton("Provided note json is null");
         }
 
         if (noteDto.getTitle() == null || noteDto.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title is not present");
+            throw new JsonValidationExcepton("Title is not present");
         }
 
         if (noteDto.getTitle().length() > 50) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title max size should be 50");
+            throw new JsonValidationExcepton("Title max size should be 50");
         }
         if (noteDto.getNote() != null && noteDto.getNote().length() > 1000) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Note max size should be 1000");
+            throw new JsonValidationExcepton("Note max size should be 1000");
         }
     }
 }
