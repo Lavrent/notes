@@ -35,4 +35,13 @@ public class NoteController {
 
         return ResponseEntity.ok(noteHandler.updateNotes(userEmail, noteDtos));
     }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteNotes(Principal principal, @RequestBody List<NoteDto> noteDtos) {
+        String userEmail = principal.getName();
+
+        noteHandler.deleteNotes(userEmail, noteDtos);
+
+        return ResponseEntity.noContent().build();
+    }
 }

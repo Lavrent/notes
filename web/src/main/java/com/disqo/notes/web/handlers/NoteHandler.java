@@ -10,4 +10,6 @@ public interface NoteHandler {
     List<NoteDto> getNotes(String userEmail);
 
     List<NoteDto> updateNotes(String userEmail, List<NoteDto> noteDtos);
+
+    void deleteNotes(String userEmail, List<NoteDto> noteDtos);
 }

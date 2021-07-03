@@ -10,9 +10,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface NoteDtoToEntityMapper {
 
-    @Mapping(source = "id", target = "uuid")
     List<NoteEntity> toNoteEntities(List<NoteDto> noteDtos);
 
-    @Mapping(source = "uuid", target = "id")
     List<NoteDto> toNoteDtos(List<NoteEntity> noteEntities);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "noteDto.id", target = "uuid")
+    NoteEntity toNoteEntity(NoteDto noteDto);
+
+    @Mapping(source = "uuid", target = "id")
+    NoteDto toNoteDto(NoteEntity noteEntity);
 }

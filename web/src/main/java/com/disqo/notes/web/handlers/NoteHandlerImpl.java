@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,5 +32,14 @@ class NoteHandlerImpl implements NoteHandler {
         noteDtoValidator.validate(noteDtos);
 
         return noteDtoService.updateNotes(userEmail, noteDtos);
+    }
+
+    @Override
+    public void deleteNotes(String userEmail, List<NoteDto> noteDtos) {
+        List<UUID> noteIds = noteDtos.stream()
+                .map(NoteDto::getId)
+                .collect(Collectors.toList());
+
+        noteDtoService.deleteNotes(userEmail, noteIds);
     }
 }

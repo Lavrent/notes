@@ -71,4 +71,14 @@ class NoteDtoServiceImpl implements NoteDtoService {
 
         return noteEntity;
     }
+
+    @Override
+    public void deleteNotes(String userEmail, List<UUID> noteIds) {
+        for (UUID noteId : noteIds) {
+            noteRepository.findByUuidAndUserEmail(noteId, userEmail)
+                    .ifPresentOrElse(noteRepository::delete, () -> {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User does not have note with id %s", noteId));
+                    });
+        }
+    }
 }
