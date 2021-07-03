@@ -23,7 +23,7 @@ public class NoteController {
         return ResponseEntity.ok(noteHandler.createNotes(userEmail, noteDtos));
     }
 
-    @GetMapping
+    @GetMapping(consumes = MediaType.ALL_VALUE)
     public ResponseEntity<List<NoteDto>> getNotes(Principal principal) {
         String userEmail = principal.getName();
 

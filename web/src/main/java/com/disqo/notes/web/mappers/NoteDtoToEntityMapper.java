@@ -1,7 +1,7 @@
 package com.disqo.notes.web.mappers;
 
+import com.disqo.notes.repository.entities.NoteEntity;
 import com.disqo.notes.web.dtos.NoteDto;
-import com.disqo.notes.web.repository.entities.NoteEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

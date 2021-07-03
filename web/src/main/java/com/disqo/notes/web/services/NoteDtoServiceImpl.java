@@ -1,11 +1,11 @@
 package com.disqo.notes.web.services;
 
+import com.disqo.notes.repository.NoteRepository;
+import com.disqo.notes.repository.UserRepository;
+import com.disqo.notes.repository.entities.NoteEntity;
+import com.disqo.notes.repository.entities.UserEntity;
 import com.disqo.notes.web.dtos.NoteDto;
 import com.disqo.notes.web.mappers.NoteDtoToEntityMapper;
-import com.disqo.notes.web.repository.NoteRepository;
-import com.disqo.notes.web.repository.UserRepository;
-import com.disqo.notes.web.repository.entities.NoteEntity;
-import com.disqo.notes.web.repository.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

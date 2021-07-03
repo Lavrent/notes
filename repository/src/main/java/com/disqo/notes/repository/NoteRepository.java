@@ -1,6 +1,6 @@
-package com.disqo.notes.web.repository;
+package com.disqo.notes.repository;
 
-import com.disqo.notes.web.repository.entities.NoteEntity;
+import com.disqo.notes.repository.entities.NoteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

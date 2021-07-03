@@ -1,6 +1,6 @@
 package com.disqo.notes.web.security;
 
-import com.disqo.notes.web.repository.UserRepository;
+import com.disqo.notes.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

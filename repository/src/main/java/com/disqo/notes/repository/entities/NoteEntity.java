@@ -1,4 +1,4 @@
-package com.disqo.notes.web.repository.entities;
+package com.disqo.notes.repository.entities;
 
 import lombok.Getter;
 import lombok.Setter;
