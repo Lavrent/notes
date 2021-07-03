@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -28,9 +29,12 @@ class NoteDtoServiceImpl implements NoteDtoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with given email does not exist"));
 
         noteEntities.forEach(noteEntity -> {
+            LocalTime currentTime = LocalTime.now();
+
+            noteEntity.setUuid(UUID.randomUUID());
             noteEntity.setUser(userEntity);
-            noteEntity.setCreateTime(LocalTime.now());
-            noteEntity.setLastUpdateTime(LocalTime.now());
+            noteEntity.setCreateTime(currentTime);
+            noteEntity.setLastUpdateTime(currentTime);
         });
 
         noteRepository.saveAll(noteEntities);

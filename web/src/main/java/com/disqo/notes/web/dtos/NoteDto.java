@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NoteDto {
+    private UUID uuid;
     private String title;
     private String note;
     private LocalTime createTime;

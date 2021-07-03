@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,6 +15,8 @@ public class NoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "uuid")
+    private UUID uuid;
     @Column(name = "title", length = 50)
     private String title;
     @Column(name = "note", length = 1000)
