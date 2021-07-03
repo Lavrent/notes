@@ -3,9 +3,7 @@ package com.disqo.notes.web.repository.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalTime;
 
 @Getter
@@ -13,6 +11,9 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "note")
 public class NoteEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "title")
     private String title;
     @Column(name = "note")
@@ -21,4 +22,9 @@ public class NoteEntity {
     private LocalTime createTime;
     @Column(name = "last_update_time")
     private LocalTime lastUpdateTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
 }
