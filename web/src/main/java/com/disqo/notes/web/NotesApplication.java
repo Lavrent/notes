@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EntityScan(basePackages = "com.disqo.notes.repository.entities")
 @EnableJpaRepositories(basePackages = "com.disqo.notes.repository")
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.disqo.notes")
 public class NotesApplication {
 
     public static void main(String[] args) {

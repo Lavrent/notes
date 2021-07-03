@@ -1,30 +1,39 @@
 package com.disqo.notes.web.handlers;
 
+import com.disqo.notes.core.models.NoteModel;
+import com.disqo.notes.core.services.NoteService;
 import com.disqo.notes.web.dtos.NoteDto;
-import com.disqo.notes.web.services.NoteDtoService;
+import com.disqo.notes.web.mappers.NoteDtoModelMapper;
 import com.disqo.notes.web.validators.NoteDtoValidator;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 class NoteHandlerImpl implements NoteHandler {
     private final NoteDtoValidator noteDtoValidator;
-    private final NoteDtoService noteDtoService;
+    private final NoteService noteService;
+    private final NoteDtoModelMapper noteDtoModelMapper;
 
     @Override
     public List<NoteDto> createNotes(String userEmail, List<NoteDto> noteDtos) {
         noteDtoValidator.validate(noteDtos);
-        return noteDtoService.createNotes(userEmail, noteDtos);
+
+        List<NoteModel> noteModels = noteDtoModelMapper.toNoteModels(noteDtos);
+        List<NoteModel> createdNoteModels = noteService.createNotes(userEmail, noteModels);
+
+        return noteDtoModelMapper.toNoteDtos(createdNoteModels);
     }
 
     @Override
     public List<NoteDto> getNotes(String userEmail) {
-        return noteDtoService.getNotes(userEmail);
+        List<NoteModel> noteModels = noteService.getNotes(userEmail);
+
+        return noteDtoModelMapper.toNoteDtos(noteModels);
     }
 
     @Override
@@ -32,7 +41,11 @@ class NoteHandlerImpl implements NoteHandler {
         noteDtoValidator.validate(noteDtos);
         noteDtoValidator.validateIds(noteDtos);
 
-        return noteDtoService.updateNotes(userEmail, noteDtos);
+        List<NoteModel> noteModels = noteDtoModelMapper.toNoteModels(noteDtos);
+
+        List<NoteModel> updatedNoteModels = noteService.updateNotes(userEmail, noteModels);
+
+        return noteDtoModelMapper.toNoteDtos(updatedNoteModels);
     }
 
     @Override
@@ -43,6 +56,6 @@ class NoteHandlerImpl implements NoteHandler {
                 .map(NoteDto::getId)
                 .collect(Collectors.toList());
 
-        noteDtoService.deleteNotes(userEmail, noteIds);
+        noteService.deleteNotes(userEmail, noteIds);
     }
 }

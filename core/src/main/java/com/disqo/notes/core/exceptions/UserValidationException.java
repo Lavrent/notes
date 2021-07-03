@@ -1,0 +1,7 @@
+package com.disqo.notes.core.exceptions;
+
+public class UserValidationException extends RuntimeException {
+    public UserValidationException(String message) {
+        super(message);
+    }
+}

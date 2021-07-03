@@ -1,16 +1,16 @@
-package com.disqo.notes.web.services;
+package com.disqo.notes.core.services;
 
+import com.disqo.notes.core.exceptions.NoteValidationException;
+import com.disqo.notes.core.exceptions.UserValidationException;
+import com.disqo.notes.core.mappers.NoteModelToEntityMapper;
+import com.disqo.notes.core.models.NoteModel;
 import com.disqo.notes.repository.NoteRepository;
 import com.disqo.notes.repository.UserRepository;
 import com.disqo.notes.repository.entities.NoteEntity;
 import com.disqo.notes.repository.entities.UserEntity;
-import com.disqo.notes.web.dtos.NoteDto;
-import com.disqo.notes.web.mappers.NoteDtoToEntityMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -20,16 +20,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 @Transactional
-class NoteDtoServiceImpl implements NoteDtoService {
+class NoteServiceImpl implements NoteService {
     private final UserRepository userRepository;
-    private final NoteDtoToEntityMapper noteDtoToEntityMapper;
+    private final NoteModelToEntityMapper noteModelToEntityMapper;
     private final NoteRepository noteRepository;
 
     @Override
-    public List<NoteDto> createNotes(String userEmail, List<NoteDto> noteDtos) {
-        List<NoteEntity> noteEntities = noteDtoToEntityMapper.toNoteEntities(noteDtos);
+    public List<NoteModel> createNotes(String userEmail, List<NoteModel> noteDtos) {
+        List<NoteEntity> noteEntities = noteModelToEntityMapper.toNoteEntities(noteDtos);
         UserEntity userEntity = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with given email does not exist"));
+                .orElseThrow(() -> new UserValidationException("User with given email does not exist"));
 
         for (NoteEntity noteEntity : noteEntities) {
             LocalTime currentTime = LocalTime.now();
@@ -42,31 +42,31 @@ class NoteDtoServiceImpl implements NoteDtoService {
 
         noteRepository.saveAll(noteEntities);
 
-        return noteDtoToEntityMapper.toNoteDtos(noteEntities);
+        return noteModelToEntityMapper.toNoteModels(noteEntities);
     }
 
     @Override
-    public List<NoteDto> getNotes(String userEmail) {
+    public List<NoteModel> getNotes(String userEmail) {
         List<NoteEntity> noteEntities = noteRepository.findAllByUserEmail(userEmail);
 
-        return noteDtoToEntityMapper.toNoteDtos(noteEntities);
+        return noteModelToEntityMapper.toNoteModels(noteEntities);
     }
 
     @Override
-    public List<NoteDto> updateNotes(String userEmail, List<NoteDto> noteDtos) {
+    public List<NoteModel> updateNotes(String userEmail, List<NoteModel> noteDtos) {
         List<NoteEntity> noteEntities = noteDtos.stream()
-                .map(noteDto -> updateNote(userEmail, noteDto))
+                .map(noteModel -> updateNote(userEmail, noteModel))
                 .collect(Collectors.toList());
 
-        return noteDtoToEntityMapper.toNoteDtos(noteEntities);
+        return noteModelToEntityMapper.toNoteModels(noteEntities);
     }
 
-    private NoteEntity updateNote(String userEmail, NoteDto noteDto) {
-        NoteEntity noteEntity = noteRepository.findByUuidAndUserEmail(noteDto.getId(), userEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Note with given id does not exist %s", noteDto.getId())));
+    private NoteEntity updateNote(String userEmail, NoteModel noteModel) {
+        NoteEntity noteEntity = noteRepository.findByUuidAndUserEmail(noteModel.getUuid(), userEmail)
+                .orElseThrow(() -> new UserValidationException(String.format("Note with given id does not exist %s", noteModel.getUuid())));
 
-        noteEntity.setTitle(noteDto.getTitle());
-        noteEntity.setNote(noteDto.getNote());
+        noteEntity.setTitle(noteModel.getTitle());
+        noteEntity.setNote(noteModel.getNote());
         noteEntity.setLastUpdateTime(LocalTime.now());
 
         return noteEntity;
@@ -77,7 +77,7 @@ class NoteDtoServiceImpl implements NoteDtoService {
         for (UUID noteId : noteIds) {
             noteRepository.findByUuidAndUserEmail(noteId, userEmail)
                     .ifPresentOrElse(noteRepository::delete, () -> {
-                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User does not have note with id %s", noteId));
+                        throw new NoteValidationException(String.format("User does not have note with id %s", noteId));
                     });
         }
     }
