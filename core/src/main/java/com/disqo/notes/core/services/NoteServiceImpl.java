@@ -27,8 +27,8 @@ class NoteServiceImpl implements NoteService {
     private final NoteRepository noteRepository;
 
     @Override
-    public List<NoteModel> createNotes(String userEmail, List<NoteModel> noteDtos) {
-        List<NoteEntity> noteEntities = noteModelToEntityMapper.toNoteEntities(noteDtos);
+    public List<NoteModel> createNotes(String userEmail, List<NoteModel> noteModels) {
+        List<NoteEntity> noteEntities = noteModelToEntityMapper.toNoteEntities(noteModels);
         UserEntity userEntity = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserValidationException("User with given email does not exist"));
 
@@ -54,8 +54,8 @@ class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<NoteModel> updateNotes(String userEmail, List<NoteModel> noteDtos) {
-        List<NoteEntity> noteEntities = noteDtos.stream()
+    public List<NoteModel> updateNotes(String userEmail, List<NoteModel> noteModels) {
+        List<NoteEntity> noteEntities = noteModels.stream()
                 .map(noteModel -> updateNote(userEmail, noteModel))
                 .collect(Collectors.toList());
 
